@@ -4,6 +4,12 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+const Anecdote = ({text, votes}) =>
+  <div>
+    <p> {text} </p>
+    <p>has {votes} votes</p>
+  </div>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -18,6 +24,16 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
+  let maxVotesIndex = 0
+  let maxVotes = points[maxVotesIndex]
+
+  points.forEach((value, index) => {
+    if (value > maxVotes) {
+      maxVotes = value
+      maxVotesIndex = index
+    }
+  })
+
   const updateSelected = () => {
     const randomIndex = getRandomInt(anecdotes.length)
     setSelected(randomIndex)
@@ -31,10 +47,13 @@ const App = () => {
   
   return (
     <div>
-      <p> {anecdotes[selected]} </p>
-      <p>has {points[selected]} votes</p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote text={anecdotes[selected]} votes={points[selected]} />
       <button onClick={updateSelected}>next anecdote</button>
       <button onClick={vote}>vote</button>
+
+      <h1>Anecdote with most votes</h1>
+      <Anecdote text={anecdotes[maxVotesIndex]} votes={points[maxVotesIndex]} />
     </div>
   )
 }
