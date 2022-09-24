@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const StatisticLine = ({text, value}) => <p> {text} {value} </p>
+const StatisticLine = ({text, value}) => <tr><td>{text}</td><td>{value}</td></tr>
 
 const Button = ({text, onClick}) => <button onClick={onClick}>{text}</button>
 
@@ -20,12 +20,16 @@ const Statistics = ({good, neutral, bad}) => {
     return (
       <div>
         <h1>statistics</h1>
-        <StatisticLine text="good" value={good} />
-        <StatisticLine text="neutral" value={neutral} />
-        <StatisticLine text="bad" value={bad} />
-        <StatisticLine text="average" value={average} />
-        <StatisticLine text="positive" value={positivePercentage} />
-        <StatisticLine text="all" value={all} />
+        <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={positivePercentage} />
+          <StatisticLine text="all" value={all} />
+        </tbody>
+        </table>
       </div>
     )
   }
