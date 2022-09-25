@@ -14,21 +14,19 @@ const App = () => {
       })
   }, [])
   
-  const countriesToShow = countries
+  const countriesFound = countries
                             .filter(country => country.name.common.toUpperCase().includes(searchString.toUpperCase()))
                             .map(country => <li key={country.name.common}>{country.name.common}</li>)
   
-  const countriesToShow2 = countriesToShow.length > 10
+  const countriesToShow = countriesFound.length > 10
                             ? <p>Too many matches</p>
-                            : <ul> {countriesToShow} </ul>
+                            : <ul> {countriesFound} </ul>
 
   return (
     <div>
       <p>find countries</p>
       <input value={searchString} onChange={event => setSearchString(event.target.value)} />
-      <ul>
-        {countriesToShow2}
-      </ul>
+      {countriesToShow}
     </div>
   )
 }
