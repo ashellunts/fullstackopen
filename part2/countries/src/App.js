@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const App = () => {
 
-  const [searchString, setSearchString] = useState('germa')
+  const [searchString, setSearchString] = useState('ger')
   const [countries, setCountries] = useState([])
 
   useEffect(() => {
@@ -37,7 +37,12 @@ const App = () => {
     footer = countriesFound.length > 10
                             ? <p>Too many matches</p>
                             : <ul>
-                                {countriesFound.map(country => <li key={country.name.common}>{country.name.common}</li>)}
+                                {countriesFound.map(
+                                  country =>  <li key={country.name.common}>
+                                                {country.name.common}
+                                                <button onClick={() => alert(country.name.common)} >show</button>
+                                              </li>)
+                                }
                               </ul>
   }
 
