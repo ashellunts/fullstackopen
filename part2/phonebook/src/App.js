@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Persons from './Persons'
+import PersonForm from './PersonForm'
+import Filter from './Filter'
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -35,46 +39,21 @@ const App = () => {
     setNewNumber("")
   }
 
-  const nameChange = event => {
-    setNewName(event.target.value)
-  }
-  const numberChange = event => {
-    setNewNumber(event.target.value)
-  }
-  const searchPatternChange = event => {
-    setNewSearchPattern(event.target.value)
-  }
-
-  const personsFiltered = persons
-                            .filter(person => newSearchPattern === "" || containsCaseInsensitive(person.name, newSearchPattern) )
-                            .map(person => <li key={person.id}>{person.name} {person.number} </li>)
-
   return (
     <div>
       <h2>Phonebook</h2>
-      search <input value={newSearchPattern} onChange={searchPatternChange} />
+      <Filter searchPattern={newSearchPattern} searchPatternChanged={event => setNewSearchPattern(event.target.value)} />
       <h3>add new</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={nameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={numberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+          formSubmitted={addPerson}
+          name={newName}
+          number={newNumber}
+          nameChanged={event => setNewName(event.target.value)}
+          numberChanged={event => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
-      <ul>
-        {personsFiltered}
-      </ul>
+      <Persons persons={persons} filterByName={newSearchPattern} /> 
     </div>
   )
 }
 
 export default App
-
-function containsCaseInsensitive(string, pattern) {
-  return string.toUpperCase().includes(pattern.toUpperCase())
-}
