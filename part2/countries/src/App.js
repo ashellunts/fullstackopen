@@ -10,7 +10,8 @@ const WeatherInCaptial = ({country}) => {
   const lat = country.capitalInfo.latlng[0]
   const lng = country.capitalInfo.latlng[1]
 
-  const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=0da4deda71d535e40e7543287af92b79`
+  const api_key = process.env.REACT_APP_API_KEY
+  const api_url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&units=metric&appid=${api_key}`
 
   axios
       .get(api_url)
