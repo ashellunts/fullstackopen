@@ -1,10 +1,44 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const Weather = ({weatherReport}) => {
+  return (
+    <div>
+      <h3> Weather in Xxx </h3>
+      <p> Temperate xxx </p>
+      <img src="link" alt="weather img" />
+      <p> Wind xxx </p>
+    </div>
+  )
+}
+
+const Country = ({country}) => {
+  if (country === '') {
+    return
+  }
+  return (
+    <div>
+      <h2> {country.name.common} </h2>
+      <p> Capital xxx </p>
+      <p> Area xxx </p>
+      <b>languages:</b>
+      <ul>
+        {Object
+          .keys(country.languages)
+          .map(languageKey => <li key={country.name.common} > {country.languages[languageKey]} </li>)
+        }
+      </ul>
+      <img src={country.flags.png} alt={country.name.common} />
+      <Weather />
+    </div>
+  )
+}
+
 const App = () => {
 
-  const [searchString, setSearchString] = useState('ger')
+  const [searchString, setSearchString] = useState('')
   const [countries, setCountries] = useState([])
+  const [countryToBeShown, setCountryToBeShown] = useState('')
 
   useEffect(() => {
     axios
@@ -21,35 +55,33 @@ const App = () => {
   if (countriesFound.length === 1) {
     const country = countriesFound[0]
     footer = (
-      <>
-        <h2> {country.name.common} </h2>
-        <b>languages:</b>
-        <ul>
-          {Object
-            .keys(country.languages)
-            .map(languageKey => <li key={country.name.common} > {country.languages[languageKey]} </li>)
-          }
-        </ul>
-        <img src={country.flags.png} alt={country.name.common} />
-      </>
+      <Country country={country} />
     )
   } else {
     footer = countriesFound.length > 10
                             ? <p>Too many matches</p>
-                            : <ul>
-                                {countriesFound.map(
-                                  country =>  <li key={country.name.common}>
-                                                {country.name.common}
-                                                <button onClick={() => alert(country.name.common)} >show</button>
-                                              </li>)
-                                }
-                              </ul>
+                            : <div>
+                                <ul>
+                                  {countriesFound.map(
+                                    country =>  <li key={country.name.common}>
+                                                  {country.name.common}
+                                                  <button onClick={() => setCountryToBeShown(country)} >show</button>
+                                                </li>)
+                                  }
+                                </ul>
+                                <Country country={countryToBeShown} />
+                              </div>
   }
 
   return (
     <div>
       <p>find countries</p>
-      <input value={searchString} onChange={event => setSearchString(event.target.value)} />
+      <input value={searchString} onChange={
+        event => {
+          setSearchString(event.target.value)
+          setCountryToBeShown('')
+          }
+      } />
       {footer}
     </div>
   )
