@@ -31,10 +31,16 @@ const App = () => {
     }
 
     const person = {name: newName, number: newNumber}
-    Phonebook.addPerson(person).then(person => { setPersons(persons.concat(person)) })
-
+    Phonebook.add(person).then(person => { setPersons(persons.concat(person)) })
     setNewName("")
     setNewNumber("")
+  }
+
+  function removePerson(personToRemove) {
+    Phonebook.remove(personToRemove).then(() => {
+      const newPersons = persons.filter(person => personToRemove.id != person.id )
+      setPersons(newPersons)
+    })
   }
 
   return (
@@ -49,7 +55,10 @@ const App = () => {
           nameChanged={event => setNewName(event.target.value)}
           numberChanged={event => setNewNumber(event.target.value)} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filterByName={newSearchPattern} /> 
+      <Persons
+          persons={persons}
+          filterByName={newSearchPattern}
+          onRemovePerson={removePerson} /> 
     </div>
   )
 }
