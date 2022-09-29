@@ -11,7 +11,11 @@ function add(person) {
 }
 
 function remove(person) {
-    return axios.delete(`${baseURL}/${person.id}`).then(response => {} )
+    return axios.delete(`${baseURL}/${person.id}`)
 }
 
-export default {getAll, add, remove}
+function updateNumber(person) {
+    return axios.put(`${baseURL}/${person.id}`, person).then(response => response.data )
+}
+
+export default {getAll, add, remove, updateNumber}

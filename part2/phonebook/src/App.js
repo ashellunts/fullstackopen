@@ -36,6 +36,13 @@ const App = () => {
     setNewNumber("")
   }
 
+  // function updateNumber(updated) {
+  //   Phonebook.updateNumber(updated).then((newP) => {
+  //     //const newPersons = 
+  //     setPersons([newP])
+  //   })
+  // }
+
   function removePerson(personToRemove) {
     Phonebook.remove(personToRemove).then(() => {
       const newPersons = persons.filter(person => personToRemove.id != person.id )
