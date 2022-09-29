@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
+import Phonebook from './Phonebook'
 
 
 const App = () => {
@@ -12,11 +12,8 @@ const App = () => {
   const [newSearchPattern, setNewSearchPattern] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    Phonebook.getAll()
+      .then(persons => { setPersons(persons) })
   }, [])
 
   const addPerson = event => {
@@ -32,9 +29,10 @@ const App = () => {
       alert("no number entered")
       return
     }
-    const maxID = persons.reduce((previousMax, person) => Math.max(previousMax, person.id), 0)
-    const newPersons = persons.concat({name: newName, number: newNumber, id: maxID + 1})
-    setPersons(newPersons)
+
+    const person = {name: newName, number: newNumber}
+    Phonebook.addPerson(person).then(person => { setPersons(persons.concat(person)) })
+
     setNewName("")
     setNewNumber("")
   }
