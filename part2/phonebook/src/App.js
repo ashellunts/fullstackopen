@@ -20,28 +20,28 @@ const App = () => {
     event.preventDefault()
     if (newName === "")
       return
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already in the list`)
-      return
-    }
-    if (newNumber === "")
-    {
+    if (newNumber === "") {
       alert("no number entered")
       return
     }
-
-    const person = {name: newName, number: newNumber}
-    Phonebook.add(person).then(person => { setPersons(persons.concat(person)) })
+    
+    const existingPerson = persons.find(person => person.name === newName)
+    if (existingPerson !== undefined) {
+      if (window.confirm(`do you want to update phone number of ${existingPerson.name}`)) {
+        const updatedPerson = {...existingPerson, number: newNumber}
+        Phonebook.updateNumber(updatedPerson).then(newP => {
+          setPersons(persons.map(person => person.name == newP.name ? newP : person))
+        })
+      } else {
+        return
+      }
+    } else {
+      const person = {name: newName, number: newNumber}
+      Phonebook.add(person).then(person => { setPersons(persons.concat(person)) })
+    }
     setNewName("")
     setNewNumber("")
   }
-
-  // function updateNumber(updated) {
-  //   Phonebook.updateNumber(updated).then((newP) => {
-  //     //const newPersons = 
-  //     setPersons([newP])
-  //   })
-  // }
 
   function removePerson(personToRemove) {
     Phonebook.remove(personToRemove).then(() => {
