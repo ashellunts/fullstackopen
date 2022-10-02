@@ -6,7 +6,7 @@ const Persons = ({persons, filterByName, onRemovePerson}) => {
     const personsFiltered = persons
         .filter(person => filterByName === "" || containsCaseInsensitive(person.name, filterByName) )
         .map(person =>
-            <li key={person.id}>
+            <li className='person' key={person.id}>
                 {person.name} {person.number}
                 <button onClick={() => {onRemovePerson(person)}} >delete</button>
             </li>)
