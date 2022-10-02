@@ -30,7 +30,7 @@ const App = () => {
       if (window.confirm(`do you want to update phone number of ${existingPerson.name}`)) {
         const updatedPerson = {...existingPerson, number: newNumber}
         Phonebook.updateNumber(updatedPerson).then(newP => {
-          setPersons(persons.map(person => person.name == newP.name ? newP : person))
+          setPersons(persons.map(person => person.name === newP.name ? newP : person))
         })
       } else {
         return
@@ -45,7 +45,7 @@ const App = () => {
 
   function removePerson(personToRemove) {
     Phonebook.remove(personToRemove).then(() => {
-      const newPersons = persons.filter(person => personToRemove.id != person.id )
+      const newPersons = persons.filter(person => personToRemove.id !== person.id )
       setPersons(newPersons)
     })
   }
