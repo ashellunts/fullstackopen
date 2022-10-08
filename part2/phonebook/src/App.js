@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Persons from './Persons'
 import PersonForm from './PersonForm'
 import Filter from './Filter'
-import Phonebook from './Phonebook'
+import PhonebookService from './PhonebookService'
 import Footer from './Footer'
 import Notification from './Notification'
 
@@ -14,7 +14,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
-    Phonebook.getAll()
+    PhonebookService.getAll()
       .then(persons => { setPersons(persons) })
   }, [])
 
@@ -26,12 +26,12 @@ const App = () => {
       alert("no number entered")
       return
     }
-    
+
     const existingPerson = persons.find(person => person.name === newName)
     if (existingPerson !== undefined) {
       if (window.confirm(`do you want to update phone number of ${existingPerson.name}`)) {
         const updatedPerson = {...existingPerson, number: newNumber}
-        Phonebook.updateNumber(updatedPerson).then(newP => {
+        PhonebookService.updateNumber(updatedPerson).then(newP => {
           setPersons(persons.map(person => person.name === newP.name ? newP : person))
         }).catch(error => {
           const newPersons = persons.filter(person => existingPerson.id !== person.id )
@@ -46,7 +46,7 @@ const App = () => {
       }
     } else {
       const person = {name: newName, number: newNumber}
-      Phonebook.add(person).then(person => {
+      PhonebookService.add(person).then(person => {
         setPersons(persons.concat(person))
         setNotification({text: `${person.name} is added to phonebook`, type: 'info'})
         setTimeout(() => {
@@ -59,7 +59,7 @@ const App = () => {
   }
 
   function removePerson(personToRemove) {
-    Phonebook.remove(personToRemove).then(() => {
+    PhonebookService.remove(personToRemove).then(() => {
       const newPersons = persons.filter(person => personToRemove.id !== person.id )
       setPersons(newPersons)
     }).catch(error => {

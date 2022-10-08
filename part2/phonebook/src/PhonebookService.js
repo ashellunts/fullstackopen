@@ -18,4 +18,6 @@ function updateNumber(person) {
     return axios.put(`${baseURL}/${person.id}`, person).then(response => response.data )
 }
 
-export default {getAll, add, remove, updateNumber}
+const PhonebookService = {getAll, add, remove, updateNumber}
+
+export default PhonebookService
