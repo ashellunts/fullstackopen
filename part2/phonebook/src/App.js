@@ -28,13 +28,22 @@ const App = () => {
         }
 
         const person = { name: newName, number: newNumber }
-        PhonebookService.add(person).then(person => {
-            setPersons(persons.concat(person))
-            setNotification({ text: `${person.name} is added to phonebook`, type: 'info' })
-            setTimeout(() => {
-                setNotification(null)
-            }, 5000);
-        })
+        PhonebookService
+            .add(person)
+            .then(person => {
+                setPersons(persons.concat(person))
+                setNotification({ text: `${person.name} is added to phonebook`, type: 'info' })
+                setTimeout(() => {
+                    setNotification(null)
+                }, 5000)
+            })
+            .catch(error => {
+                console.log(error)
+                setNotification({ text: error.response.data.error, type: 'error' })
+                setTimeout(() => {
+                    setNotification(null)
+                }, 5000)
+            })
 
         setNewName("")
         setNewNumber("")
